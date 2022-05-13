@@ -48,7 +48,7 @@ spec:
           imagePullPolicy: {{ .Values.webui.image.pullPolicy }}
           args:
             - "-r"
-            - {{ include "falcosidekick.name" . }}-ui-redis:6379
+            - {{ include "falcosidekick.fullname" . }}-ui-redis{{ if .Values.falcosidekick.fullfqdn }}.{{ .Release.Namespace }}.svc.cluster.local{{ end }}:{{ .Values.webui.redis.service.port | default "6379" }}
           ports:
             - name: http
               containerPort: 2802
@@ -65,7 +65,6 @@ spec:
               port: http
             initialDelaySeconds: 10
             periodSeconds: 5
-          env: {}
           resources:
             {{- toYaml .Values.webui.resources | nindent 12 }}
       {{- with .Values.webui.nodeSelector }}
@@ -145,7 +144,6 @@ spec:
             timeoutSeconds: 2 
             successThreshold: 1 
             failureThreshold: 3
-          env: {}
           resources:
             {{- toYaml .Values.webui.redis.resources | nindent 12 }}
       {{- with .Values.webui.redis.nodeSelector }}

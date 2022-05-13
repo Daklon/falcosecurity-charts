@@ -397,6 +397,10 @@ webui:
     tag: "v2.0.0"
     pullPolicy: IfNotPresent
 
+  podSecurityContext:
+    runAsUser: 1234
+    fsGroup: 1234
+
   priorityClassName: ""
 
   podLabels: {}
@@ -454,6 +458,15 @@ webui:
 
     podLabels: {}
     podAnnotations: {}
+
+    fullfqdn: false
+
+    service:
+      # type: LoadBalancer
+      type: ClusterIP
+      port: 6379
+      targetPort: 6379
+      annotations: {}
 
     resources: {}
       # We usually recommend not to specify default resources and to leave this as a conscious
